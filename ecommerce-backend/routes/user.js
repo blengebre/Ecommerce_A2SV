@@ -4,10 +4,11 @@ const Product = require('../model/product');
 const { validateProduct } = require('../controller/auth.controller');
 const {Signup,Login,UpdateProduct,GetAllProduct,SearchProducts,GetDetail,DeleteProduct}=require('../controller/auth.controller');
 const {verifyToken,verifyAdmin,verifyUser}=require('../middleware/auth');
+const upload = require('../middleware/upload');
 // User Registration Route
 router.post('/auth/register',Signup);
 router.post('/auth/login',Login);
-router.post('/product', verifyToken, verifyAdmin, async (req, res) => {
+router.post('/product', verifyToken, verifyAdmin, upload.single('image'), async (req, res) => {
   const error = validateProduct(req.body);
   if (error) return res.status(400).json({ message: error });
 
